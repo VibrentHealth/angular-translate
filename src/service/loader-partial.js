@@ -51,7 +51,7 @@ function $translatePartialLoader() {
     return urlTemplate.replace(/\{part\}/g, this.name).replace(/\{lang\}/g, targetLang);
   };
 
-  Part.prototype.getTable = function (lang, $q, $http, $httpOptions, urlTemplate, errorHandler) {
+  Part.prototype.getTable = function (lang, $rootScope, $q, $http, $httpOptions, urlTemplate, errorHandler) {
 
     //locals
     var self = this;
@@ -86,6 +86,7 @@ function $translatePartialLoader() {
       fetchData().then(
         function (result) {
           handleNewData(result.data);
+          $rootScope.$emit('$translatePartialLoaderStructureChangeFinished', result);
         },
         function (errorResponse) {
           if (errorHandler) {
@@ -338,7 +339,7 @@ function $translatePartialLoader() {
 
         angular.forEach(prioritizedParts, function (part) {
           loaders.push(
-            part.getTable(options.key, $q, $http, options.$http, options.urlTemplate, errorHandler)
+            part.getTable(options.key, $rootScope, $q, $http, options.$http, options.urlTemplate, errorHandler)
           );
           part.urlTemplate = options.urlTemplate;
         });
@@ -386,10 +387,10 @@ function $translatePartialLoader() {
 
         if (!hasPart(name)) {
           parts[name] = new Part(name, priority);
-          $rootScope.$emit('$translatePartialLoaderStructureChanged', name);
+          $rootScope.$emit('$translatePartialLoaderStructureChangeStarted', name);
         } else if (!parts[name].isActive) {
           parts[name].isActive = true;
-          $rootScope.$emit('$translatePartialLoaderStructureChanged', name);
+          $rootScope.$emit('$translatePartialLoaderStructureChangeStarted', name);
         }
 
         return service;
@@ -456,7 +457,7 @@ function $translatePartialLoader() {
             parts[name].isActive = false;
           }
           if (wasActive) {
-            $rootScope.$emit('$translatePartialLoaderStructureChanged', name);
+            $rootScope.$emit('$translatePartialLoaderStructureChangeStarted', name);
           }
         }
 

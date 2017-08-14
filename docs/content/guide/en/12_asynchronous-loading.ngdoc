@@ -257,7 +257,7 @@ translation tables everytime it gets fired.
 
 <pre>
 app.run(function ($rootScope, $translate) {
-  $rootScope.$on('$translatePartialLoaderStructureChanged', function () {
+  $rootScope.$on('$translatePartialLoaderStructureChangeStarted', function () {
     $translate.refresh();
   });
 });

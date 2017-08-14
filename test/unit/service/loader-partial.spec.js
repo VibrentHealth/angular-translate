@@ -416,7 +416,7 @@ describe('pascalprecht.translate', function () {
       it('should broadcast a $translatePartialLoaderStructureChanged event', function () {
         spyOn($rootScope, '$emit');
         $translatePartialLoader.addPart('part');
-        expect($rootScope.$emit).toHaveBeenCalledWith('$translatePartialLoaderStructureChanged', 'part');
+        expect($rootScope.$emit).toHaveBeenCalledWith('$translatePartialLoaderStructureChangeStarted', 'part');
       });
     });
 
@@ -475,7 +475,7 @@ describe('pascalprecht.translate', function () {
         $translatePartialLoader.addPart('part');
         spyOn($rootScope, '$emit');
         $translatePartialLoader.deletePart('part');
-        expect($rootScope.$emit).toHaveBeenCalledWith('$translatePartialLoaderStructureChanged', 'part');
+        expect($rootScope.$emit).toHaveBeenCalledWith('$translatePartialLoaderStructureChangeStarted', 'part');
       });
     });
 
